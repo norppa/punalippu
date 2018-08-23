@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 const cors = require('cors')
 app.use(cors())
+app.use(express.static('build'))
 
 const mongoose = require('mongoose')
 const url = 'mongodb://kaartilainen:kaartilaisensalasana7@ds125482.mlab.com:25482/warshawjanka'
