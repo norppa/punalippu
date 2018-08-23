@@ -16,15 +16,11 @@ const Song = mongoose.model('Song', {
     recording: String
 })
 
-app.get('/', (req, res) => {
-    res.send('<h1>Purppuravaate</h1>')
-})
-
-app.get('/songs', (req, res) => {
+app.get('/api/songs', (req, res) => {
     Song.find({}).then(songs => res.json(songs))
 })
 
-app.post('/songs', (req, res) => {
+app.post('/api/songs', (req, res) => {
 
     const input = req.body
     const song = new Song({
@@ -39,7 +35,7 @@ app.post('/songs', (req, res) => {
         })
 })
 
-app.get('/songs/:id', (req, res) => {
+app.get('/api/songs/:id', (req, res) => {
     const id = Number(req.params.id)
     const song = songs.find(song => song.id === id)
     if (song) {
