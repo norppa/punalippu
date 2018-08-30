@@ -96,7 +96,6 @@ class App extends React.Component {
           <div className="arow">
             <div className="acol content">
               <div className="content-side dark">
-                <Search changeSearchInput={this.changeSearchInput} />
                 <input type='text'
                   value={this.state.searchInput}
                   onChange={this.changeSearchInput}></input>

@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -7,7 +8,7 @@ app.use(cors())
 app.use(express.static('build'))
 
 const mongoose = require('mongoose')
-const url = 'mongodb://kaartilainen:kaartilaisensalasana7@ds125482.mlab.com:25482/warshawjanka'
+const url = process.env.MONGODB_URL
 mongoose.connect(url, { useNewUrlParser: true })
 
 const Song = mongoose.model('Song', {
