@@ -4,36 +4,31 @@ import FrontPage from './FrontPage'
 import SongInput from './SongInput'
 import SongOutput from './SongOutput'
 import SongList from './SongList'
-import Search from './Search'
+import Search from './components/Search'
 import SearchOptions from './SearchOptions'
 import titleImage from './img/kenenlippuakannat2.png'
 
-// all this hassle for one icon???
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faAngleDoubleDown, faAngleDoubleUp } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-library.add(faAngleDoubleDown, faAngleDoubleUp)
-
-
-
 const apiUrl = 'api/songs'
+let songs = []
 
 class App extends React.Component {
   state = {
-    songs: [],
     selected: '',
-    searchAdvanced: false,
-    searchLyrics: false,
-    searchRecordedOnly: false,
-    searchInput: ''
+    search: {
+      searchInput: '',
+      searchLyrics: false,
+      searchChordedOnly: false,
+      searchRecordedOnly: false
+    }
   }
 
   getSongs = () => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log("songs fetched", response.data)
-        this.setState({ songs: response.data })
+        console.log(response.data)
+        songs = response.data
+        this.setState({ searchResults: response.data })
       })
       .catch(error => console.log('error fetching songs from db'))
   }
@@ -54,19 +49,25 @@ class App extends React.Component {
     this.getSongs()
   }
 
+
   selectSong = (song) => this.setState({ selected: song })
 
-  changeSearchInput = (event) => this.setState({ searchInput: event.target.value })
-  changeSearchSelect = (event) => this.setState({ searchSelect: event.target.value })
-  toggleAdvancedSearch = () => this.setState(prevState => ({ searchAdvanced: !prevState.searchAdvanced }))
-  toggleSearchLyrics = () => this.setState(prevState => ({ searchLyrics: !prevState.searchLyrics }))
-  toggleSearchRecordedOnly = () => this.setState(prevState => ({ searchRecordedOnly: !prevState.searchRecordedOnly }))
+  handleSearchChange = (event) => {
+    let search = this.state.search
+    if (event.target.name === 'searchInput') {
+      search.searchInput = event.target.value.toLowerCase()
+    } else {
+      const parameter = event.target.name
+      search[parameter] = !search[parameter]
+    }
+    this.setState({ search })
+  }
 
   prepareContent = () => {
     const selected = this.state.selected
     if (selected === 'insertnew') return <SongInput saveSong={this.saveSong} />
     if (selected === '') return <FrontPage />
-    let selectedSong = this.state.songs.find(song => song.name === selected)
+    let selectedSong = songs.find(song => song.name === selected)
     return <SongOutput song={selectedSong} />
   }
 
@@ -74,43 +75,26 @@ class App extends React.Component {
 
     const content = this.prepareContent()
 
-    let toggleAdvancedSearchIcon, advancedSearchComponent
-    if (this.state.searchAdvanced) {
-      toggleAdvancedSearchIcon = <FontAwesomeIcon
-        icon='angle-double-up' size='2x' onClick={this.toggleAdvancedSearch} />
-      advancedSearchComponent = <SearchOptions
-        toggleSearchLyrics={this.toggleSearchLyrics}
-        toggleSearchRecordedOnly={this.toggleSearchRecordedOnly} />
-    } else {
-      toggleAdvancedSearchIcon =
-        <FontAwesomeIcon icon='angle-double-down' size='2x' onClick={this.toggleAdvancedSearch} />
-    }
-
     return (
-        <div className="supercontainer">
-          <div className="arow">
-            <div className="acol header">
-              <img onClick={() => this.selectSong('')} src={titleImage} />
-            </div>
+      <div className="supercontainer">
+        <div className="arow">
+          <div className="acol header">
+            <img onClick={() => this.selectSong('')} src={titleImage} />
           </div>
-          <div className="arow">
-            <div className="acol content">
-              <div className="content-side dark">
-                <input type='text'
-                  value={this.state.searchInput}
-                  onChange={this.changeSearchInput}></input>
-                &emsp;
-                  {toggleAdvancedSearchIcon}
+        </div>
+        <div className="arow">
+          <div className="acol content">
+            <div className="content-side dark">
+              <Search handleSearchChange={this.handleSearchChange}
+              changeSearchInput={this.changeSearchInput}
+                handleAdvancedSearchChange={this.handleAdvancedSearchChange} />
 
-                  <br />
-              {advancedSearchComponent}
-              <SongList songs={this.state.songs}
+              <SongList songs={songs}
+                search={this.state.search}
                 selected={this.state.selected}
-                searchInput={this.state.searchInput}
-                searchLyrics={this.state.searchLyrics}
                 selectSong={this.selectSong} />
               <hr />
-              {this.state.songs.length} kappaletta
+              {songs.length} kappaletta
                 <button
                 onClick={() => this.selectSong('insertnew')}>Lisää uusi</button>
             </div>

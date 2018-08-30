@@ -101,3 +101,22 @@ pre {
     border: 1px solid green;
     height: 100%;
 }
+
+.search {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.searchBasic {
+    display: flex;
+    justify-content: right;
+}
+
+.searchAdvanced {
+    margin-top:10px;
+}
+
+.searchAdvanced hr {
+    margin-top: 15px;
+}

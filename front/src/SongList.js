@@ -1,34 +1,23 @@
 import React from 'react'
 import SongLink from './SongLink'
 
-class SongList extends React.Component {
-    
-    filterSongsBySearchCriteria = (song) => {
-        const searchString = this.props.searchInput.toLowerCase()
-        let searchTarget = song.name
-        if (this.props.searchLyrics) searchTarget += song.lyrics
-        searchTarget = searchTarget.toLowerCase()
-        return searchTarget.includes(searchString)
-      }
+const SongList = ({songs, search, selected, selectSong}) => {
+    return songs
+        .filter(song => {
+            if (search.searchChordedOnly && song.chorded === false) return false
+            if (search.searchRecordedOnly && song.recording === '') return false
 
-    render() {
-
-        let songList = this.props.songs
-        if (this.props.searchInput) {
-            songList = songList.filter(this.filterSongsBySearchCriteria)
-        }
-        if (this.props.searchRecordedOnly) {
-            songList = songList.filter(song => song.recording)
-        }
-        return songList
-            .sort((a, b) => a.name > b.name ? 1 : -1)
-            .map(song =>
-                <SongLink title={song.name}
-                    selectSong={this.props.selectSong}
-                    selected={(song.name === this.props.selected).toString()} />
-            )
-    }
-
+            let searchTarget = song.name
+            if (search.searchLyrics) searchTarget += song.lyrics
+            searchTarget = searchTarget.toLowerCase()
+            return searchTarget.includes(search.searchInput)
+        })
+        .sort((a, b) => a.name > b.name ? 1 : -1)
+        .map(song =>
+            <SongLink title={song.name}
+                selectSong={selectSong}
+                selected={(song.name === selected).toString()} />
+        )
 }
 
 export default SongList;
