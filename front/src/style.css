@@ -1,0 +1,103 @@
+body {
+    background-color: #590D17;
+    background-image: url('http://paper-backgrounds.com/textureimages/2014/03/red-grunge-concrete-texture-hd.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #FFEEEF;
+}
+
+a:visited {
+    color: #871120;
+}
+
+pre {
+    background-color: #f5deb3;
+    color: black;
+    padding: 20px;
+    margin: 30px;
+}
+
+.dark {
+    background-color: #2C060B;
+    background-color: rgba(10,0,0,0.8);
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.supercontainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.arow {
+    display: flex;
+    justify-content: center;
+}
+
+.acol {
+    min-width: 800px;
+    width:80%;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0px;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+}
+
+.content-side {
+    margin-right: 20px;
+    width: 500px;
+}
+
+.content-main {
+    width: 100%;
+}
+  
+.title {
+    padding: 20px 0px;
+}
+
+.title img {
+    width: 100%;
+}
+
+.sidebar {
+    padding: 20px;
+    margin-right: 20px;
+}
+
+.frontimage {
+    width: 60%;
+    display: block;
+    margin: 10px auto 50px auto;
+    border: 3px solid black;
+    border-radius: 25px;
+}
+
+.frontquote {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.songlink a:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.selectedsong {
+    font-weight: bold;
+}
+
+.react-icons {
+    display: inline-block;
+    text-align: center;
+    border: 1px solid green;
+    height: 100%;
+}
