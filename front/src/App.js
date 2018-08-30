@@ -1,11 +1,13 @@
 import React from 'react'
 import axios from 'axios'
-import FrontPage from './FrontPage'
-import SongInput from './SongInput'
-import SongOutput from './SongOutput'
+import FrontPage from './pages/FrontPage'
+import SongInput from './pages/SongInput'
+import SongOutput from './pages/SongOutput'
 import SongList from './SongList'
 import Search from './components/Search'
+import Login from './components/Login'
 import titleImage from './img/kenenlippuakannat2.png'
+
 
 const apiUrl = 'api/songs'
 let songs = []
@@ -18,7 +20,8 @@ class App extends React.Component {
       searchLyrics: false,
       searchChordedOnly: false,
       searchRecordedOnly: false
-    }
+    },
+    viewLogin: false
   }
 
   getSongs = () => {
@@ -69,19 +72,29 @@ class App extends React.Component {
     return <SongOutput song={selectedSong} />
   }
 
+  login = (password) => {
+    console.log('logging in', password)
+    this.setState({viewLogin: false})
+  }
+
   render() {
 
     const content = this.prepareContent()
 
     return (
       <div className="supercontainer">
-        <div className="arow">
-          <div className="acol header">
-            <img onClick={() => this.selectSong('')} src={titleImage} alt='kenen lippua kannat'/>
+        <div className="row">
+          <div className="col header">
+            <img id='headerImage'
+              src={titleImage}
+              onClick={() => this.selectSong('')}
+              onDoubleClick={() => this.setState({viewLogin: true})}
+              alt='kenen lippua kannat' />
           </div>
         </div>
-        <div className="arow">
-          <div className="acol content">
+        {this.state.viewLogin && <Login submit={this.login}/>}
+        <div className="row">
+          <div className="col content">
             <div className="content-side dark">
               <Search handleSearchChange={this.handleSearchChange}
                 changeSearchInput={this.changeSearchInput}
@@ -101,7 +114,7 @@ class App extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
