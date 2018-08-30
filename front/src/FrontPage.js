@@ -9,7 +9,7 @@ const FrontPage = () => {
           Viel' kerran totuus voiton saapi, <br />
           se vahva ompi uskomme.<br /><br />
           &emsp;&emsp;&emsp;&emsp; -- <a>Aatteen puolesta</a></p>
-        <img src={frontImage} className="frontimage" />
+        <img src={frontImage} className="frontimage" alt='kolme miestä kantavat lippuja'/>
     </div>
 
   )

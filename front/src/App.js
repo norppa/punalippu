@@ -5,7 +5,6 @@ import SongInput from './SongInput'
 import SongOutput from './SongOutput'
 import SongList from './SongList'
 import Search from './components/Search'
-import SearchOptions from './SearchOptions'
 import titleImage from './img/kenenlippuakannat2.png'
 
 const apiUrl = 'api/songs'
@@ -26,7 +25,6 @@ class App extends React.Component {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log(response.data)
         songs = response.data
         this.setState({ searchResults: response.data })
       })
@@ -79,14 +77,14 @@ class App extends React.Component {
       <div className="supercontainer">
         <div className="arow">
           <div className="acol header">
-            <img onClick={() => this.selectSong('')} src={titleImage} />
+            <img onClick={() => this.selectSong('')} src={titleImage} alt='kenen lippua kannat'/>
           </div>
         </div>
         <div className="arow">
           <div className="acol content">
             <div className="content-side dark">
               <Search handleSearchChange={this.handleSearchChange}
-              changeSearchInput={this.changeSearchInput}
+                changeSearchInput={this.changeSearchInput}
                 handleAdvancedSearchChange={this.handleAdvancedSearchChange} />
 
               <SongList songs={songs}

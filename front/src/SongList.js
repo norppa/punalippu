@@ -14,7 +14,8 @@ const SongList = ({songs, search, selected, selectSong}) => {
         })
         .sort((a, b) => a.name > b.name ? 1 : -1)
         .map(song =>
-            <SongLink title={song.name}
+            <SongLink key={song._id}
+                title={song.name}
                 selectSong={selectSong}
                 selected={(song.name === selected).toString()} />
         )
