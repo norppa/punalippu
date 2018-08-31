@@ -9,7 +9,6 @@ loginRouter.post('/', (request, response) => {
     return bcrypt.compare(request.body.password, pwdHash)
         .then(passwordCorrect => {
             if (passwordCorrect) {
-                console.log("got this far")
                 const token = jwt.sign({user: 'admin'}, process.env.SECRET)
                 return response.status(200).send({token})
             } else {

@@ -22,7 +22,8 @@ class App extends React.Component {
       searchRecordedOnly: false
     },
     viewLogin: false,
-    admin: ''
+    admin: '',
+    edit: false
   }
 
   getSongs = () => {
@@ -36,6 +37,18 @@ class App extends React.Component {
     axios.post(apiUrl, song, { headers: { 'authorization': 'bearer ' + this.state.admin } })
       .then(response => this.getSongs())
       .catch(error => console.log('Failed to save new song'))
+  }
+
+  updateSong = (newSong, oldSong) => {
+    axios.put(apiUrl + '/' + oldSong._id, newSong, { headers: { 'authorization': 'bearer ' + this.state.admin } })
+    .then(() => this.getSongs())
+    .catch(error => console.log('failed to update song', oldSong.name))
+  }
+
+  deleteSong = (song) => {
+    axios.delete(apiUrl + '/' + song._id,  { headers: { 'authorization': 'bearer ' + this.state.admin } })
+      .then(() => this.getSongs())
+      .catch(error => console.log('failed to delete song', song.name))
   }
 
   login = (password) => {
@@ -54,7 +67,7 @@ class App extends React.Component {
   }
 
 
-  selectSong = (song) => this.setState({ selected: song })
+  selectSong = (song) => this.setState({ selected: song, edit: false})
 
   handleSearchChange = (event) => {
     let search = this.state.search
@@ -69,19 +82,49 @@ class App extends React.Component {
 
   prepareContent = () => {
     const selected = this.state.selected
-    if (selected === 'insertnew') return <SongInput saveSong={this.saveSong} />
-    if (selected === '') return <FrontPage />
-    return <SongOutput song={selected} />
+    const edit = this.state.edit
+    if (edit) {
+      console.log("edit true, selected false")
+      return <SongInput song={selected} handleSongInput={this.handleSongInput} />
+    }
+
+    if (selected) {
+      return <SongOutput song={this.state.selected} />
+    }
+    return <FrontPage />
+  }
+
+  handleSongInput = () => {
+    this.setState({edit: false})
+  }
+
+  handleSongInput = (song) => {
+    if (this.state.selected) {
+      this.updateSong(song, this.state.selected)
+    } else {
+      this.saveSong(song)
+    }
+    this.setState({selected: song, edit: false})
   }
 
   administer = (event) => {
     switch (event.target.name) {
       case 'add':
-        this.setState({ selected: 'insertnew' })
-        break        
+        this.setState({ selected: null, edit: true })
+        break
+      case 'del':
+        this.deleteSong(this.state.selected)
+        this.setState({selected: '', edit: false})
+        break
+      case 'edit':
+        this.setState({edit: true})
+        break
+      case 'cancelEdit':
+        this.setState({edit: false})
+        break
       case 'logout':
         const selected = this.state.selected === 'insertnew' ? '' : this.state.selected
-        this.setState({ admin: '', selected })
+        this.setState({ admin: '', selected, edit: false })
         break
     }
   }
@@ -99,7 +142,7 @@ class App extends React.Component {
             <img id='headerImage'
               src={titleImage}
               onClick={() => this.selectSong('')}
-              onDoubleClick={() => this.setState({ viewLogin: true })}
+              onDoubleClick={() => this.setState({ viewLogin: !this.state.viewLogin })}
               alt='kenen lippua kannat' />
           </div>
         </div>
@@ -116,7 +159,7 @@ class App extends React.Component {
                 selected={this.state.selected}
                 selectSong={this.selectSong} />
 
-              {this.state.admin && <AdminPanel administer={this.administer} />}
+              {this.state.admin && <AdminPanel edit={this.state.edit} administer={this.administer} />}
             </div>
             <div className="content-main dark">
               {content}

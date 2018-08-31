@@ -2,12 +2,6 @@ const songsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Song = require('../models/song')
 
-
-
-songsRouter.get('/', (request, response) => {
-    Song.find({}).then(songs => response.json(songs))
-})
-
 const authError = (request) => {
     const authorization = request.get('authorization')
     if (!authorization || !authorization.toLowerCase().startsWith('bearer ')) {
@@ -23,6 +17,10 @@ const authError = (request) => {
     return null
 }
 
+songsRouter.get('/', (request, response) => {
+    Song.find({}).then(songs => response.json(songs))
+})
+
 songsRouter.post('/', (request, response) => {
     const error = authError(request)
     if (error) return response.status(401).send(error)
@@ -34,8 +32,21 @@ songsRouter.post('/', (request, response) => {
         recording: input.recording
     })
     song.save().then(result => response.json(song))
+})
 
+songsRouter.put('/:id', (request, response) => {
+    const error = authError(request)
+    if (error) return response.status(401).send(error)
 
+    const song = {
+        name: request.body.name,
+        lyrics: request.body.lyrics,
+        recording: request.body.recording,
+        chorded: request.body.chorded
+    }
+    Song.findOneAndUpdate({_id: request.params.id}, song, {new: true} )
+    .then(updatedSong => response.json(updatedSong))
+    .catch(error => response.status(400).send({error: 'malformatted id'}))
 })
 
 songsRouter.delete('/:id', (request, response) => {

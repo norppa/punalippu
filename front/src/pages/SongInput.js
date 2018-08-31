@@ -1,22 +1,30 @@
 import React from 'react'
 
 class App extends React.Component {
-    state = { name: '', recording: '', chords: false, lyrics: '' }
+    state = { name: '', recording: '', chorded: false, lyrics: '' }
+
+    componentDidMount() {
+        if (this.props.song) {
+            this.setState(this.props.song)
+        }
+    }
 
     handleChangeName = (event) => this.setState({ name: event.target.value })
     handleChangeRecording = (event) => this.setState({ recording: event.target.value })
     handleChamgeLyrics = (event) => this.setState({ lyrics: event.target.value })
-    handleChangeChords = () => this.setState(prevState => ({chords: !prevState.chords}))
+    handleChangeChords = () => this.setState(prevState => ({ chorded: !prevState.chorded }))
 
-    handleSubmit = (event) => {
-        event.preventDefault()
-        this.props.saveSong(this.state)
-        this.setState({name: '', recording: '', chords: false, lyrics: ''})
+    handleSubmit = () => {
+        this.props.handleSongInput(this.state)
+    }
+
+    handleCancel = () => {
+        this.props.handleSongInput()
     }
 
     render() {
         return (
-            <form>
+            <div className="songInput">
                 Nimi:<input type="text"
                     value={this.state.name}
                     onChange={this.handleChangeName} /><br />
@@ -25,12 +33,12 @@ class App extends React.Component {
                     onChange={this.handleChangeRecording} /><br />
                 Soinnutettu: <input type="checkbox"
                     onChange={this.handleChangeChords} /><br />
-                <textarea rows="30" cols="50"
+                <textarea
                     value={this.state.lyrics}
                     onChange={this.handleChamgeLyrics} /><br />
-                <button type='submit'
-                    onClick={this.handleSubmit}>tallenna</button>
-            </form>
+                <button onClick={this.handleSubmit}>tallenna</button>
+                <button onClick={this.handleCancel}>peruuta</button>
+            </div>
         )
     }
 }
