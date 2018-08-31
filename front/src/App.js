@@ -6,14 +6,14 @@ import SongOutput from './pages/SongOutput'
 import SongList from './SongList'
 import Search from './components/Search'
 import Login from './components/Login'
+import AdminPanel from './components/AdminPanel'
 import titleImage from './img/kenenlippuakannat2.png'
 
-
-const apiUrl = 'api/songs'
-let songs = []
+const apiUrl = '/api/songs'
 
 class App extends React.Component {
   state = {
+    songs: [],
     selected: '',
     search: {
       searchInput: '',
@@ -21,29 +21,32 @@ class App extends React.Component {
       searchChordedOnly: false,
       searchRecordedOnly: false
     },
-    viewLogin: false
+    viewLogin: false,
+    admin: ''
   }
 
   getSongs = () => {
     axios
       .get(apiUrl)
-      .then(response => {
-        songs = response.data
-        this.setState({ searchResults: response.data })
-      })
+      .then(response => this.setState({ songs: response.data }))
       .catch(error => console.log('error fetching songs from db'))
   }
 
   saveSong = (song) => {
-    axios.post(apiUrl, song)
+    axios.post(apiUrl, song, { headers: { 'authorization': 'bearer ' + this.state.admin } })
+      .then(response => this.getSongs())
+      .catch(error => console.log('Failed to save new song'))
+  }
+
+  login = (password) => {
+    axios.post('/api/login', { password })
       .then(response => {
-        console.log('saveSong success')
-        this.getSongs()
+        this.setState({ viewLogin: false, admin: response.data.token })
       })
       .catch(error => {
-        console.log('saveSong fail')
+        console.log("login failed", error)
+        this.setState({ viewLogin: false })
       })
-
   }
 
   componentDidMount() {
@@ -68,14 +71,23 @@ class App extends React.Component {
     const selected = this.state.selected
     if (selected === 'insertnew') return <SongInput saveSong={this.saveSong} />
     if (selected === '') return <FrontPage />
-    let selectedSong = songs.find(song => song.name === selected)
+    let selectedSong = this.state.songs.find(song => song.name === selected)
     return <SongOutput song={selectedSong} />
   }
 
-  login = (password) => {
-    console.log('logging in', password)
-    this.setState({viewLogin: false})
+  administer = (event) => {
+    switch (event.target.name) {
+      case 'add':
+        this.setState({ selected: 'insertnew' })
+        break
+      case 'logout':
+        const selected = this.state.selected === 'insertnew' ? '' : this.state.selected
+        this.setState({ admin: '', selected })
+        break
+    }
   }
+
+
 
   render() {
 
@@ -88,11 +100,11 @@ class App extends React.Component {
             <img id='headerImage'
               src={titleImage}
               onClick={() => this.selectSong('')}
-              onDoubleClick={() => this.setState({viewLogin: true})}
+              onDoubleClick={() => this.setState({ viewLogin: true })}
               alt='kenen lippua kannat' />
           </div>
         </div>
-        {this.state.viewLogin && <Login submit={this.login}/>}
+        {this.state.viewLogin && <Login submit={this.login} />}
         <div className="row">
           <div className="col content">
             <div className="content-side dark">
@@ -100,14 +112,12 @@ class App extends React.Component {
                 changeSearchInput={this.changeSearchInput}
                 handleAdvancedSearchChange={this.handleAdvancedSearchChange} />
 
-              <SongList songs={songs}
+              <SongList songs={this.state.songs}
                 search={this.state.search}
                 selected={this.state.selected}
                 selectSong={this.selectSong} />
-              <hr />
-              {songs.length} kappaletta
-                <button
-                onClick={() => this.selectSong('insertnew')}>Lisää uusi</button>
+
+              {this.state.admin && <AdminPanel administer={this.administer} />}
             </div>
             <div className="content-main dark">
               {content}
