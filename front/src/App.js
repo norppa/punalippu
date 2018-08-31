@@ -71,15 +71,14 @@ class App extends React.Component {
     const selected = this.state.selected
     if (selected === 'insertnew') return <SongInput saveSong={this.saveSong} />
     if (selected === '') return <FrontPage />
-    let selectedSong = this.state.songs.find(song => song.name === selected)
-    return <SongOutput song={selectedSong} />
+    return <SongOutput song={selected} />
   }
 
   administer = (event) => {
     switch (event.target.name) {
       case 'add':
         this.setState({ selected: 'insertnew' })
-        break
+        break        
       case 'logout':
         const selected = this.state.selected === 'insertnew' ? '' : this.state.selected
         this.setState({ admin: '', selected })

@@ -1,24 +1,33 @@
 import React from 'react'
-import SongLink from './SongLink'
 
-const SongList = ({songs, search, selected, selectSong}) => {
-    return songs
-        .filter(song => {
-            if (search.searchChordedOnly && song.chorded === false) return false
-            if (search.searchRecordedOnly && song.recording === '') return false
+class SongList extends React.Component {
 
-            let searchTarget = song.name
-            if (search.searchLyrics) searchTarget += song.lyrics
-            searchTarget = searchTarget.toLowerCase()
-            return searchTarget.includes(search.searchInput)
-        })
-        .sort((a, b) => a.name > b.name ? 1 : -1)
-        .map(song =>
-            <SongLink key={song._id}
-                title={song.name}
-                selectSong={selectSong}
-                selected={(song.name === selected).toString()} />
-        )
+    foo = (song) => () => this.props.selectSong(song)
+
+    render() {
+        return this.props.songs
+            .filter(song => {
+                if (this.props.search.searchChordedOnly && song.chorded === false) return false
+                if (this.props.search.searchRecordedOnly && song.recording === '') return false
+
+                let searchTarget = song.name
+                if (this.props.search.searchLyrics) searchTarget += song.lyrics
+                searchTarget = searchTarget.toLowerCase()
+                return searchTarget.includes(this.props.search.searchInput)
+            })
+            .sort((a, b) => a.name > b.name ? 1 : -1)
+            .map(song => {
+                const classes = "songlink" + (this.props.selected === 'true' ? " selectedsong" : "")
+                return (
+                    <div id={song._id}
+                        className={classes}
+                        onClick={this.foo(song)}>
+                        {song.name}
+                    </div>
+                )
+            })
+    }
 }
+
 
 export default SongList;

@@ -86,7 +86,7 @@ pre {
     text-align: center;
 }
 
-.songlink a:hover {
+.songlink:hover {
     font-weight: bold;
     cursor: pointer;
 }
