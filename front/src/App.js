@@ -21,6 +21,7 @@ class App extends React.Component {
       searchChordedOnly: false,
       searchRecordedOnly: false
     },
+    clickCount: 0,
     viewLogin: false,
     admin: '',
     edit: false
@@ -126,10 +127,20 @@ class App extends React.Component {
         const selected = this.state.selected === 'insertnew' ? '' : this.state.selected
         this.setState({ admin: '', selected, edit: false })
         break
+      default:
+        console.log('event not binded')
     }
   }
 
-
+  handleTitleClick = (event) => {
+    if (event.button === 0) {
+      this.setState({selected: null})
+    }
+    if (event.button === 1) {
+      event.preventDefault()
+      this.setState(prevState => ({viewLogin: !prevState.viewLogin}))
+    }
+  }
 
   render() {
 
@@ -141,8 +152,7 @@ class App extends React.Component {
           <div className="col header">
             <img id='headerImage'
               src={titleImage}
-              onClick={() => this.selectSong('')}
-              onDoubleClick={() => this.setState({ viewLogin: !this.state.viewLogin })}
+              onMouseDown={this.handleTitleClick}
               alt='kenen lippua kannat' />
           </div>
         </div>
