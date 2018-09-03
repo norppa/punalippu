@@ -23,22 +23,41 @@ class App extends React.Component {
     }
 
     render() {
+        const rows = this.state.lyrics.split('\n').length
         return (
             <div className="songInput">
-                Nimi:<input type="text"
-                    value={this.state.name}
-                    onChange={this.handleChangeName} /><br />
-                Tallenne: <input type="text"
-                    value={this.state.recording}
-                    onChange={this.handleChangeRecording} /><br />
-                Soinnutettu: <input type="checkbox"
-                    onChange={this.handleChangeChords} /><br />
-                <textarea
+                <h2>Muokataan: {this.state.name}</h2>
+
+                <div className='inputTable'>
+                    <div className='inputTableCol'>
+                        <div className='inputTableRow'>Nimi:</div>
+                        <div className='inputTableRow'>Tallenne:</div>
+                        <div className='inputTableRow'>Soinnutettu:</div>
+
+                    </div>
+                    <div className='inputTableCol inputTableColRight'>
+                        <div className='inputTableRow'>
+                            <input type="text"
+                                value={this.state.name}
+                                onChange={this.handleChangeName} />
+                        </div>
+                        <div className='inputTableRow'>
+                            <input type="text"
+                                value={this.state.recording}
+                                onChange={this.handleChangeRecording} />
+                        </div>
+                        <div className='inputTableRow'>
+                            <input type="checkbox"
+                                onChange={this.handleChangeChords} />
+                        </div>
+                    </div>
+                </div>
+                <p><textarea rows={rows}
                     value={this.state.lyrics}
-                    onChange={this.handleChamgeLyrics} /><br />
+                    onChange={this.handleChamgeLyrics} /></p>
                 <button onClick={this.handleSubmit}>tallenna</button>
                 <button onClick={this.handleCancel}>peruuta</button>
-            </div>
+            </div >
         )
     }
 }

@@ -42,12 +42,12 @@ class App extends React.Component {
 
   updateSong = (newSong, oldSong) => {
     axios.put(apiUrl + '/' + oldSong._id, newSong, { headers: { 'authorization': 'bearer ' + this.state.admin } })
-    .then(() => this.getSongs())
-    .catch(error => console.log('failed to update song', oldSong.name))
+      .then(() => this.getSongs())
+      .catch(error => console.log('failed to update song', oldSong.name))
   }
 
   deleteSong = (song) => {
-    axios.delete(apiUrl + '/' + song._id,  { headers: { 'authorization': 'bearer ' + this.state.admin } })
+    axios.delete(apiUrl + '/' + song._id, { headers: { 'authorization': 'bearer ' + this.state.admin } })
       .then(() => this.getSongs())
       .catch(error => console.log('failed to delete song', song.name))
   }
@@ -68,7 +68,7 @@ class App extends React.Component {
   }
 
 
-  selectSong = (song) => this.setState({ selected: song, edit: false})
+  selectSong = (song) => this.setState({ selected: song, edit: false })
 
   handleSearchChange = (event) => {
     let search = this.state.search
@@ -95,17 +95,17 @@ class App extends React.Component {
     return <FrontPage />
   }
 
-  handleSongInput = () => {
-    this.setState({edit: false})
-  }
-
   handleSongInput = (song) => {
+    if (!song) {
+      this.setState({ edit: false })
+      return
+    }
     if (this.state.selected) {
       this.updateSong(song, this.state.selected)
     } else {
       this.saveSong(song)
     }
-    this.setState({selected: song, edit: false})
+    this.setState({ selected: song, edit: false })
   }
 
   administer = (event) => {
@@ -115,13 +115,10 @@ class App extends React.Component {
         break
       case 'del':
         this.deleteSong(this.state.selected)
-        this.setState({selected: '', edit: false})
+        this.setState({ selected: '', edit: false })
         break
       case 'edit':
-        this.setState({edit: true})
-        break
-      case 'cancelEdit':
-        this.setState({edit: false})
+        this.setState({ edit: true })
         break
       case 'logout':
         const selected = this.state.selected === 'insertnew' ? '' : this.state.selected
@@ -134,11 +131,11 @@ class App extends React.Component {
 
   handleTitleClick = (event) => {
     if (event.button === 0) {
-      this.setState({selected: null})
+      this.setState({ selected: null })
     }
     if (event.button === 1) {
       event.preventDefault()
-      this.setState(prevState => ({viewLogin: !prevState.viewLogin}))
+      this.setState(prevState => ({ viewLogin: !prevState.viewLogin }))
     }
   }
 

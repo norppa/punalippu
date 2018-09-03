@@ -5,6 +5,7 @@ class SongList extends React.Component {
     foo = (song) => () => this.props.selectSong(song)
 
     render() {
+        console.log("songs", this.props.songs)
         return this.props.songs
             .filter(song => {
                 if (this.props.search.searchChordedOnly && song.chorded === false) return false

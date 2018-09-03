@@ -14,7 +14,6 @@ pre {
     background-color: #f5deb3;
     color: black;
     padding: 20px;
-    margin: 30px;
 }
 
 .dark {
@@ -58,6 +57,7 @@ pre {
 
 .content-main {
     width: 100%;
+    padding: 20px 50px;
 }
   
 .title {
@@ -137,7 +137,33 @@ pre {
 }
 
 .songInput textarea {
+    display: block;
+    box-sizing: border-box;
     background-color: #f5deb3;
-    width: 400px;
-    height: 400px;
+    color: black;
+    padding: 20px;
+    width: 100%;
+}
+
+.inputTable {
+    display: flex;
+    flex-direction: row;
+}
+
+.inputTableCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputTableColRight {
+    flex-grow: 1;
+}
+
+.inputTableRow {
+    height: 1.5em;
+    margin: 5px;
+}
+
+.inputTable input[type=text] {
+    width: 100%
 }
