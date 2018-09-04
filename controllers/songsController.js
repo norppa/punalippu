@@ -29,7 +29,8 @@ songsRouter.post('/', (request, response) => {
     const song = new Song({
         name: input.name,
         lyrics: input.lyrics,
-        recording: input.recording
+        recording: input.recording,
+        chorded: input.chorded
     })
     song.save().then(result => response.json(song))
 })
@@ -38,6 +39,9 @@ songsRouter.put('/:id', (request, response) => {
     const error = authError(request)
     if (error) return response.status(401).send(error)
 
+    console.log("got a put request", request.body)
+    console.log("id", request.params.id)
+
     const song = {
         name: request.body.name,
         lyrics: request.body.lyrics,
@@ -45,8 +49,14 @@ songsRouter.put('/:id', (request, response) => {
         chorded: request.body.chorded
     }
     Song.findOneAndUpdate({_id: request.params.id}, song, {new: true} )
-    .then(updatedSong => response.json(updatedSong))
-    .catch(error => response.status(400).send({error: 'malformatted id'}))
+    .then(updatedSong => {
+        console.log(updatedSong)
+        response.json(updatedSong)
+    })
+    .catch(error => {
+        console.log(error)
+        response.status(400).send({error: 'malformatted id'})
+    })
 })
 
 songsRouter.delete('/:id', (request, response) => {

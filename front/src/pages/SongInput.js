@@ -48,6 +48,7 @@ class App extends React.Component {
                         </div>
                         <div className='inputTableRow'>
                             <input type="checkbox"
+                                checked={this.state.chorded}
                                 onChange={this.handleChangeChords} />
                         </div>
                     </div>

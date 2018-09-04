@@ -3,7 +3,7 @@ import axios from 'axios'
 import FrontPage from './pages/FrontPage'
 import SongInput from './pages/SongInput'
 import SongOutput from './pages/SongOutput'
-import SongList from './SongList'
+import SongList from './components/SongList'
 import Search from './components/Search'
 import Login from './components/Login'
 import AdminPanel from './components/AdminPanel'
@@ -43,7 +43,8 @@ class App extends React.Component {
   }
 
   updateSong = (newSong, oldSong) => {
-    axios.put(apiUrl + '/' + oldSong._id, newSong, { headers: { 'authorization': 'bearer ' + this.state.admin } })
+    const url = apiUrl + '/' + oldSong._id
+    axios.put(url, newSong, { headers: { 'authorization': 'bearer ' + this.state.admin } })
       .then(() => this.getSongs())
       .catch(error => console.log('failed to update song', oldSong.name))
   }
