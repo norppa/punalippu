@@ -25,9 +25,10 @@ class AdminPanel extends React.Component {
     button = (eventName, label) => {
         const classes = 'adminButton' + (eventName !== 'logout' && this.props.edit ? ' disabled' : '')
         return (
-            <span onClick={this.handleClick(eventName)}
+            <span key={eventName}
+                onClick={this.handleClick(eventName)}
                 className={classes}
-                style={{width: `${label.length}ch`}}>
+                style={{ width: `${label.length}ch` }}>
                 {label}
             </span >
         )
@@ -38,9 +39,9 @@ class AdminPanel extends React.Component {
         return (
             <div className="row">
                 <div className="col dark adminPanel">
-                
+
                     <div className="ap-left">
-                        {buttons.left.map(item => this.button(item[0], item[1]))}    
+                        {buttons.left.map(item => this.button(item[0], item[1]))}
                     </div>
                     <div className='ap-right'>
 
