@@ -50,6 +50,7 @@ class App extends React.Component {
   }
 
   deleteSong = (song) => {
+    if (!window.confirm(`Haluatko varmasti poistaa kappaleen "${song.name}"?`)) return
     axios.delete(apiUrl + '/' + song._id, { headers: { 'authorization': 'bearer ' + this.state.admin } })
       .then(() => this.getSongs())
       .catch(error => console.log('failed to delete song', song.name))
