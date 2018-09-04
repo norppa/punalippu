@@ -1,6 +1,6 @@
 const songsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
-const Song = require('../models/song')
+const Song = require('../models/Song')
 
 const authError = (request) => {
     const authorization = request.get('authorization')

@@ -27,6 +27,8 @@ class App extends React.Component {
     edit: false
   }
 
+
+
   getSongs = () => {
     axios
       .get(apiUrl)
@@ -55,7 +57,9 @@ class App extends React.Component {
   login = (password) => {
     axios.post('/api/login', { password })
       .then(response => {
-        this.setState({ viewLogin: false, admin: response.data.token })
+        const token = response.data.token
+        window.localStorage.setItem('admin', token)
+        this.setState({ viewLogin: false, admin: token })
       })
       .catch(error => {
         console.log("login failed", error)
@@ -64,6 +68,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const token = window.localStorage.getItem('admin')
+    if (token) {
+      this.setState({admin: token})
+    }
     this.getSongs()
   }
 
@@ -85,7 +93,6 @@ class App extends React.Component {
     const selected = this.state.selected
     const edit = this.state.edit
     if (edit) {
-      console.log("edit true, selected false")
       return <SongInput song={selected} handleSongInput={this.handleSongInput} />
     }
 
@@ -108,8 +115,8 @@ class App extends React.Component {
     this.setState({ selected: song, edit: false })
   }
 
-  administer = (event) => {
-    switch (event.target.name) {
+  administer = (action) => {
+    switch (action) {
       case 'add':
         this.setState({ selected: null, edit: true })
         break
@@ -123,6 +130,7 @@ class App extends React.Component {
       case 'logout':
         const selected = this.state.selected === 'insertnew' ? '' : this.state.selected
         this.setState({ admin: '', selected, edit: false })
+        window.localStorage.clear()
         break
       default:
         console.log('event not binded')
@@ -145,6 +153,7 @@ class App extends React.Component {
 
     return (
       <div className="supercontainer">
+        {this.state.admin && <AdminPanel edit={this.state.edit} administer={this.administer} />}
         <div className="row">
           <div className="col header">
             <img id='headerImage'
@@ -165,8 +174,6 @@ class App extends React.Component {
                 search={this.state.search}
                 selected={this.state.selected}
                 selectSong={this.selectSong} />
-
-              {this.state.admin && <AdminPanel edit={this.state.edit} administer={this.administer} />}
             </div>
             <div className="content-main dark">
               {content}

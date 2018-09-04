@@ -24,9 +24,15 @@ pre {
     border-radius: 20px;
 }
 
+.adminPanel {
+    margin-top: 0px;
+    border-radius: 0px 0px 20px 20px;
+}
+
 .supercontainer {
     display: flex;
     flex-direction: column;
+    margin-top: -8px;
 }
 
 .row {
@@ -37,12 +43,13 @@ pre {
 .col {
     min-width: 800px;
     width:80%;
+    
 }
 
 .header {
     display: flex;
     justify-content: center;
-    padding: 10px 0px;
+    padding: 12px 0px 0px 0px;
 }
 
 .content {
@@ -60,10 +67,6 @@ pre {
     padding: 20px 50px;
 }
   
-.title {
-    padding: 20px 0px;
-}
-
 .title img {
     width: 100%;
 }
@@ -166,4 +169,28 @@ pre {
 
 .inputTable input[type=text] {
     width: 100%
+}
+
+/*** Admin Panel */
+
+.adminPanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px;
+}
+
+.ap-left, .ap-right {
+    padding: 10px 50px;
+}
+
+.adminButton {
+    float: left;
+    margin: 0px 20px;
+}
+
+.adminButton:hover {
+    font-weight: bold;
+    cursor: pointer;
+
 }

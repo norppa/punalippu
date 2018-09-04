@@ -5,7 +5,6 @@ class SongList extends React.Component {
     foo = (song) => () => this.props.selectSong(song)
 
     render() {
-        console.log("songs", this.props.songs)
         return this.props.songs
             .filter(song => {
                 if (this.props.search.searchChordedOnly && song.chorded === false) return false
@@ -20,7 +19,7 @@ class SongList extends React.Component {
             .map(song => {
                 const classes = "songlink" + (this.props.selected === 'true' ? " selectedsong" : "")
                 return (
-                    <div id={song._id}
+                    <div key={song._id}
                         className={classes}
                         onClick={this.foo(song)}>
                         {song.name}
