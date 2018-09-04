@@ -3,6 +3,8 @@ body {
     background-image: url('http://paper-backgrounds.com/textureimages/2014/03/red-grunge-concrete-texture-hd.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
+    font-family: 'Sawarabi Mincho', sans-serif;
+    font-size: 1.1em;
     color: #FFEEEF;
 }
 
@@ -87,6 +89,11 @@ pre {
 .frontquote {
     font-size: 1.5em;
     text-align: center;
+}
+
+.frontquote span {
+    position: relative;
+    left: 8pc;
 }
 
 .songlink:hover {

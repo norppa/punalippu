@@ -8,7 +8,7 @@ const FrontPage = () => {
           niin käyköön suojaan lippumme.<br />
           Viel' kerran totuus voiton saapi, <br />
           se vahva ompi uskomme.<br /><br />
-          &emsp;&emsp;&emsp;&emsp; -- <a>Aatteen puolesta</a></p>
+          <span>—Aatteen puolesta</span></p>
         <img src={frontImage} className="frontimage" alt='kolme miestä kantavat lippuja'/>
     </div>
 
