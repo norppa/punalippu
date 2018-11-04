@@ -17,7 +17,7 @@ class SongList extends React.Component {
             })
             .sort((a, b) => a.name > b.name ? 1 : -1)
             .map(song => {
-                const classes = "songlink" + (this.props.selected === 'true' ? " selectedsong" : "")
+                const classes = "songlink" + (this.props.selected === song ? " selectedsong" : "")
                 return (
                     <div key={song._id}
                         className={classes}

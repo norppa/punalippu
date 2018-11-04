@@ -1,15 +1,10 @@
 body {
-    background-color: #590D17;
-    background-image: url('http://paper-backgrounds.com/textureimages/2014/03/red-grunge-concrete-texture-hd.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-size: cover;
     font-family: 'Sawarabi Mincho', sans-serif;
     font-size: 1.1em;
-    color: #FFEEEF;
-}
-
-a:visited {
-    color: #871120;
+    color: white;
 }
 
 pre {
@@ -18,9 +13,15 @@ pre {
     padding: 20px;
 }
 
+.siteHeader {
+  color: black;
+  font-family: 'Indie Flower';
+  font-size: 6.0em;
+  margin: 0px;
+}
+
 .dark {
-    background-color: #2C060B;
-    background-color: rgba(10,0,0,0.8);
+    background-color: rgba(0,0,0,0.8);
     padding: 20px;
     border: 1px solid black;
     border-radius: 20px;
@@ -45,13 +46,12 @@ pre {
 .col {
     min-width: 800px;
     width:80%;
-    
+
 }
 
 .header {
     display: flex;
     justify-content: center;
-    padding: 12px 0px 0px 0px;
 }
 
 .content {
@@ -68,7 +68,7 @@ pre {
     width: 100%;
     padding: 20px 50px;
 }
-  
+
 .title img {
     width: 100%;
 }
@@ -86,12 +86,12 @@ pre {
     border-radius: 25px;
 }
 
-.frontquote {
+.frontpage-text {
     font-size: 1.5em;
     text-align: center;
 }
 
-.frontquote span {
+.frontpage-text span {
     position: relative;
     left: 8pc;
 }

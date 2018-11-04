@@ -1,2 +1,5 @@
 node_modules
 .env
+deploy.sh
+front/build
+front/node_modules

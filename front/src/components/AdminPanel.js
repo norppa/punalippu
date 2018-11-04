@@ -7,6 +7,7 @@ const buttons = {
         ['del', 'Poista']
     ],
     right: [
+    ['admin', 'Hallinnoi'],
         ['logout', 'Kirjaudu ulos']
     ]
 }
@@ -44,8 +45,7 @@ class AdminPanel extends React.Component {
                         {buttons.left.map(item => this.button(item[0], item[1]))}
                     </div>
                     <div className='ap-right'>
-
-                        {this.button('logout', 'Kirjaudu ulos')}
+                        {buttons.right.map(item => this.button(item[0], item[1]))}
                     </div>
                 </div>
             </div>
